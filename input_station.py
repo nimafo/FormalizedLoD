@@ -1,21 +1,36 @@
 if __name__ == "__main__":
     pass
 
-
 import os
 import trimesh
 import pathlib
 import numpy as np
 from scipy.spatial import QhullError
 
-def Thresholds(non_permanenet_objs, count = 10): # intended to define the thresholds for inclusion/exclusion of non-permanent objects as numpy array
+def Thresholds(permanent_objs_transparent, non_permanenet_objs, count = 10): # intended to define the thresholds for inclusion/exclusion of non-permanent objects as numpy array
     #Add non_permanent objects
     full_list = [] #list containing all the non permanent objects flattened
     values_of_interest = []
     bb_size_list = []
     non_perm_dict = {}
     #list the non_permanent dirs
-    for i in non_permanenet_objs['dirs'].keys():
+    # glazing triangles for solid angle calculation
+    #empty numpy array to store the triangles
+    window_triangles_list = []
+    for i in permanent_objs_transparent.keys():
+        try:
+            mesh = trimesh.load(i)
+            #print("window triangle shape:", mesh.triangles.shape)
+            # add mesh triangles to list
+            window_triangles_list.append(mesh.triangles)
+        except ValueError:
+            #print(f"ValueError on {i}. Skipping...")
+            continue
+
+    # Concatenate all triangles in the list into a single numpy array
+    window_triangles = np.concatenate(window_triangles_list, axis=0)
+    #print("Window triangles shape:", window_triangles.shape) # should be (n, 3, 3)
+    for i in non_permanenet_objs['dirs'].keys(): 
         #print(i)
         dir_list = [] #only path to the obj files in one directory
         directory_contents = os.listdir(i)
@@ -33,6 +48,7 @@ def Thresholds(non_permanenet_objs, count = 10): # intended to define the thresh
                 bb_size_list.append(mesh.bounding_box_oriented.area)
                 values_of_interest.append(mesh.bounding_box_oriented.area)#Core of the inclusion/ exclusion
                 OBB_size = mesh.bounding_box_oriented.area
+                
             except QhullError:
                 #print(f"QhullError creating mesh from {j}. Skipping...")
                 continue
@@ -46,16 +62,15 @@ def Thresholds(non_permanenet_objs, count = 10): # intended to define the thresh
             non_perm_dict.update({object_Name:{'attributes':{'transparency_type':'opaque',
                                                     'material' : non_permanenet_objs['dirs'][i],
                                                     'permanency': 'non-permanent',
-                                                    'OBB_area': OBB_size},
+                                                    'OBB_area': OBB_size,
+                                                    'solid_angle': solid_angle(window_triangles, mesh.centroid)},
                                                 'file_address': j,
                                                 'mesh': mesh}})
     min_value = min(values_of_interest)
     max_value = max(values_of_interest)
     thresholds = np.linspace(min_value,max_value,10)
 
-    return thresholds, values_of_interest, non_perm_dict, bb_size_list #types: numpy, list
-
-    
+    return thresholds, values_of_interest, non_perm_dict, bb_size_list #types: numpy, list 
 def space_dict(permanent_objs_opaque, permanent_objs_transparent, non_perm_dict):
     space_dict = {} #contains all the objects in a space, their mesh, and material, and address 
     #Permanent objects
@@ -81,6 +96,32 @@ def space_dict(permanent_objs_opaque, permanent_objs_transparent, non_perm_dict)
     return space_dict
 def trn_ref_cnstraint(val:float): #puts 0-1 constaint on input reflectance/transmittance
     return 1 if val >= 1 else 0.03 if val <= 0.03 else val    
+def solid_angle(triangles: np.ndarray, point: np.ndarray) -> float:
+    """
+    Calculate the clumulative solid angle subtended by the mesh triangles from the point.
+    
+    Parameters:
+    triangles (numpy.ndarray): Array of triangles, shape (n, 3, 3)
+    point (numpy.ndarray): Observation point, shape (3,)
+    
+    Returns:
+    float: Solid angle in steradians
+    """
+    def signed_volume(a, b, c, d):
+        return np.dot(np.cross(b - a, c - a), d - a) / 6.0
+
+    total_solid_angle = 0.0
+    
+    for tri in triangles:
+        a, b, c = tri - point
+        norm = np.linalg.norm(np.cross(b - a, c - a))
+        volume = signed_volume(a, b, c, np.array([0.0, 0.0, 0.0]))
+        angle = 2 * np.arctan2(volume, np.dot(a, b) * np.linalg.norm(c) + 
+                                      np.dot(b, c) * np.linalg.norm(a) + 
+                                      np.dot(c, a) * np.linalg.norm(b))
+        total_solid_angle += angle
+    
+    return np.abs(total_solid_angle)
 
 
 class DB_s08:
@@ -114,7 +155,6 @@ class DB_s08:
             r"/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/perm_roomabove_wals.obj": {'R': trn_ref_cnstraint(0.9+rand_mat[5]),'G': trn_ref_cnstraint(0.9+rand_mat[5]),'B': trn_ref_cnstraint(0.9+rand_mat[5]),'roughness': 0.3,'specularity': 0.0},
             r"/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/perm_wooden_beams.obj": {'R': trn_ref_cnstraint(0.75+rand_mat[6]),'G':trn_ref_cnstraint(0.75+rand_mat[6]),'B': trn_ref_cnstraint(0.75+rand_mat[6]),'roughness': 0.1,'specularity': 0.05}}
         
-        
         non_permanenet_objs = { "dirs":{#key: semantics, value: Parent directory containing all the non-permanent instances as .obj files. 
             r'/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/Furn_chairs':{'R': trn_ref_cnstraint(0.04+rand_mat[7]),'G':trn_ref_cnstraint(0.04+rand_mat[7]),'B': trn_ref_cnstraint(0.04+rand_mat[7]),'roughness': 0.2,'specularity': 0.15},
             r'/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/Furn_desk':{'R': trn_ref_cnstraint(0.85+rand_mat[8]),'G':trn_ref_cnstraint(0.85+rand_mat[8]),'B': trn_ref_cnstraint(0.85+rand_mat[8]),'roughness': 0.1,'specularity': 0.02},
@@ -126,16 +166,12 @@ class DB_s08:
             'obj_path_list': {
                 }}
         
-        
-
-
         # Read the folders with multiple objs
         for key in non_permanenet_objs["dirs"]:
             dir = pathlib.Path(key) #Parent directory
             non_permanenet_objs["obj_path_list"][key] = list(dir.iterdir()) #Iterdir() produces a generator
         print(len(non_permanenet_objs["obj_path_list"].keys()))
-        thresholds, values_of_interest, non_perm_dict, bb_size_list = Thresholds(non_permanenet_objs, count = 10)
-        
+        thresholds, values_of_interest, non_perm_dict, bb_size_list = Thresholds(permanent_objs_transparent,non_permanenet_objs, count = 10)
         
         #basic space info
         self.glod4 = space_dict(permanent_objs_opaque, permanent_objs_transparent, non_perm_dict)
