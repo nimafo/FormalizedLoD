@@ -99,9 +99,12 @@ def trn_ref_cnstraint(val:float): #puts 0-1 constaint on input reflectance/trans
 def solid_angle(triangles: np.ndarray, point: np.ndarray) -> float:
     """
     Calculate the clumulative solid angle subtended by the mesh triangles from the point.
+    IT DOES NOT ACCOUNT FOR OCCULSIONS BY OTHER OBJECTS!!!!! how to resolve that? 
+    
     
     Parameters:
-    triangles (numpy.ndarray): Array of triangles, shape (n, 3, 3)
+    triangles (numpy.
+    .....ndarray): Array of triangles, shape (n, 3, 3)
     point (numpy.ndarray): Observation point, shape (3,)
     
     Returns:
@@ -113,6 +116,8 @@ def solid_angle(triangles: np.ndarray, point: np.ndarray) -> float:
     total_solid_angle = 0.0
     
     for tri in triangles:
+        # if centerpoint of triangle is visible from the point -- considerig all the other perm/non-perm objects
+        # (if visible:)
         a, b, c = tri - point
         norm = np.linalg.norm(np.cross(b - a, c - a))
         volume = signed_volume(a, b, c, np.array([0.0, 0.0, 0.0]))
@@ -123,6 +128,16 @@ def solid_angle(triangles: np.ndarray, point: np.ndarray) -> float:
     
     return np.abs(total_solid_angle)
 
+def WindowTriangleVisible(triangles: np.ndarray, point: np.ndarray) -> float:
+    """
+    Is the 'center of a the triangle' visible from the 'centroid of the furniture'?
+    
+    Inputs: space_dict, point ###(remember to exclude the furniture itself)
+    
+    
+    
+    """
+    
 
 class DB_s08:
     def __init__(self, Mat_acc_level:float):

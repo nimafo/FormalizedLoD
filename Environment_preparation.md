@@ -1,10 +1,10 @@
 each time, do:
-- module load 2023r1
-- module load py-pip
+- module load 2023r1 py-pip
 - change python kernel to /usr/bin/python3.11.5
 - run the cells in windowSolidAngle.ipynb, if still necessary, do the rest:
 
 once in a while, do:
 - Python kernel 3.11.5 : /usr/bin/python3.11 -m pip install ipykernel -U --user --force-reinstall
-- /usr/bin/python3.11 -m pip install trimesh pathlib scipy matplotlib plotly
+- /usr/bin/python3.11 -m pip install trimesh pathlib scipy matplotlib plotly rtree
+- /usr/bin/python3.11 -m pip install -U kaleido
 - /usr/bin/python3.11 -m pip install numpy  --user --force-reinstall
