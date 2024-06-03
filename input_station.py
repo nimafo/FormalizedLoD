@@ -35,7 +35,7 @@ class Thresholds:
         # Concatenate all window triangles in the list into a single numpy array
         window_triangles = np.concatenate(window_triangles_list, axis=0)
         #print("Window triangles shape:", window_triangles.shape) # should be (n, 3, 3)
-        for i in non_permanenet_objs['dirs'].keys(): 
+        for i in non_permanenet_objs['dirs'].keys(): # each category of non-permanent objects
             #print(i)
             dir_list = [] #only path to the obj files in one directory
             directory_contents = os.listdir(i)
@@ -44,7 +44,7 @@ class Thresholds:
                 abs_path = os.path.join(i, item)
                 full_list.append(abs_path)
                 dir_list.append(abs_path)
-            for j in dir_list: # j is the path to the obj file
+            for j in dir_list: # j is the path to the .obj instance file
                 #print(j)
                 try:
                     #print(j)
@@ -53,7 +53,6 @@ class Thresholds:
                     bb_size_list.append(mesh.bounding_box_oriented.area)
                     values_of_interest.append(mesh.bounding_box_oriented.area)#Core of the inclusion/ exclusion
                     OBB_size = mesh.bounding_box_oriented.area
-                    
                 except QhullError:
                     #print(f"QhullError creating mesh from {j}. Skipping...")
                     continue
@@ -79,7 +78,10 @@ class Thresholds:
                 total_solid_angle = 0.0
         
                 for tri in window_triangles:
-                    if self.is_visible(tri.mean(axis=0), j):
+                    window_center = tri.mean(axis=0)
+                    #if self.is_visible(window_center, j):
+                        # print(str(j) + " is visible" + "from winow" + str(tri.mean(axis=0)))
+                    if 1==1:
                         a, b, c = tri - mesh.centroid
                         norm = np.linalg.norm(np.cross(b - a, c - a))
                         volume = np.dot(np.cross(b - a, c - a), np.array([0.0, 0.0, 0.0]) - a) / 6.0
@@ -87,7 +89,9 @@ class Thresholds:
                                                     np.dot(b, c) * np.linalg.norm(a) + 
                                                     np.dot(c, a) * np.linalg.norm(b))
                         total_solid_angle += angle
-                    
+                    #else:
+                        #print(str(j) + " is NOT visible" + "from winow" + str(tri.mean(axis=0)))
+                        
                 solid_angle = np.abs(total_solid_angle)
                 
                 object_Name = os.path.basename(j).split(".")[0]
@@ -101,11 +105,14 @@ class Thresholds:
         
             
 
-        min_value = min(values_of_interest)
-        max_value = max(values_of_interest)
-        thresholds = np.linspace(min_value,max_value,10)
-
-        return thresholds, values_of_interest, non_perm_dict, bb_size_list #types: numpy, list 
+        self.min_value = min(values_of_interest)
+        self.max_value = max(values_of_interest)
+        self.thresholds = np.linspace(self.min_value,self.max_value,10)
+        self.values_of_interest = values_of_interest
+        self.bb_size_list = bb_size_list
+        self.non_perm_dict = non_perm_dict
+        return None
+        #return thresholds, values_of_interest, non_perm_dict, bb_size_list #types: numpy, list 
     
     def is_visible(self, window_center, furn_path): # implement as is_visible(tri.mean(), j)
         '''
@@ -120,13 +127,30 @@ class Thresholds:
         '''
         
         intersections = []
-        for obj in self.non_perm_dict.keys():
-            if furn_path != obj: # for all "other" objects:
-                # create non_permanent_obj mesh
-                mesh = self.non_perm_dict[obj]['mesh']
-                intersections.append(mesh.ray.intersects_location(ray_origins=[mesh.centroid], ray_directions=[window_center - mesh.centroid]))
-            if len(intersections) != 0:
-                return(not bool(len(intersections)))
+        for i in self.non_permanenet_objs['dirs'].keys():
+            dir_list = [] #only path to the obj files in one directory
+            directory_contents = os.listdir(i)
+            # Print the absolute path of each item in the directory
+            for item in directory_contents:
+                abs_path = os.path.join(i, item)
+                dir_list.append(abs_path)
+            for j in dir_list: # j is the path to the .obj instance file
+                if furn_path != j: # for all "other" objects:
+                    try:
+                        mesh = trimesh.load(j)
+                        intersections.append(mesh.ray.intersects_location(ray_origins=[mesh.centroid], ray_directions=[window_center - mesh.centroid]))
+                        if len(intersections) != 0:
+                            return(not bool(len(intersections)))
+                    except QhullError:
+                        #print(f"QhullError creating mesh from {j}. Skipping...")
+                        continue
+                    except TypeError:
+                        #print(f"TypeError on {j}. Skipping...")
+                        continue
+                    except ValueError:
+                        #print(f"ValueError on {j}. Skipping...") -- 
+                        continue
+                
         
         return(not bool(len(intersections))) # if no intersections, means that window is visible. 
         
@@ -314,8 +338,17 @@ class DB_s08:
         for key in non_permanenet_objs["dirs"]:
             dir = pathlib.Path(key) #Parent directory
             non_permanenet_objs["obj_path_list"][key] = list(dir.iterdir()) #Iterdir() produces a generator
-        print(len(non_permanenet_objs["obj_path_list"].keys()))
-        thresholds, values_of_interest, non_perm_dict, bb_size_list = Thresholds(permanent_objs_transparent,non_permanenet_objs, count = 10)
+        print("there are " + str(len(non_permanenet_objs["obj_path_list"].keys())) + " directories with non-permanent objects")
+        
+        thresh = Thresholds(permanent_objs_transparent,non_permanenet_objs, count = 10)
+        # thresholds, values_of_interest, non_perm_dict, bb_size_list = Thresholds(permanent_objs_transparent,non_permanenet_objs, count = 10)
+        min_value = thresh.min_value
+        values_of_interest = thresh.values_of_interest
+        non_perm_dict = thresh.non_perm_dict
+        bb_size_list = thresh.bb_size_list
+
+        
+        
         
         #basic space info
         self.glod4 = space_dict(permanent_objs_opaque, permanent_objs_transparent, non_perm_dict)
