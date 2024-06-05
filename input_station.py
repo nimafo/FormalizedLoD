@@ -81,14 +81,14 @@ class Thresholds:
                     window_center = tri.mean(axis=0)
                     #if self.is_visible(window_center, j):
                         # print(str(j) + " is visible" + "from winow" + str(tri.mean(axis=0)))
-                    if 1==1:
-                        a, b, c = tri - mesh.centroid
+                    if 1==1: # ignore visibility for now
+                        a, b, c = tri - mesh.centroid 
                         norm = np.linalg.norm(np.cross(b - a, c - a))
-                        volume = np.dot(np.cross(b - a, c - a), np.array([0.0, 0.0, 0.0]) - a) / 6.0
+                        volume = np.dot(np.cross(b - a, c - a), np.array([0.0, 0.0, 0.0]) - a) / 6.0 
                         angle = 2 * np.arctan2(volume, np.dot(a, b) * np.linalg.norm(c) + 
                                                     np.dot(b, c) * np.linalg.norm(a) + 
                                                     np.dot(c, a) * np.linalg.norm(b))
-                        total_solid_angle += angle
+                        total_solid_angle += abs(angle)
                     #else:
                         #print(str(j) + " is NOT visible" + "from winow" + str(tri.mean(axis=0)))
                         
@@ -102,9 +102,6 @@ class Thresholds:
                                                         'solid_angle': solid_angle},
                                                     'file_address': j,
                                                     'mesh': mesh}})
-        
-            
-
         self.min_value = min(values_of_interest)
         self.max_value = max(values_of_interest)
         self.thresholds = np.linspace(self.min_value,self.max_value,10)
