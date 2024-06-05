@@ -34,9 +34,11 @@ class Thresholds:
 
         # Concatenate all window triangles in the list into a single numpy array
         window_triangles = np.concatenate(window_triangles_list, axis=0)
+        print (f"there are {len(window_triangles)} window triangles")
         #print("Window triangles shape:", window_triangles.shape) # should be (n, 3, 3)
         for i in non_permanenet_objs['dirs'].keys(): # each category of non-permanent objects
-            #print(i)
+            
+            print(i)
             dir_list = [] #only path to the obj files in one directory
             directory_contents = os.listdir(i)
             # Print the absolute path of each item in the directory
@@ -45,7 +47,7 @@ class Thresholds:
                 full_list.append(abs_path)
                 dir_list.append(abs_path)
             for j in dir_list: # j is the path to the .obj instance file
-                #print(j)
+                print(j)
                 try:
                     #print(j)
                     mesh = trimesh.load(j)
@@ -76,13 +78,16 @@ class Thresholds:
                     Returns:
                     float: Solid angle in steradians '''
                 total_solid_angle = 0.0
-        
+                triangle_id = 0
                 for tri in window_triangles:
                     window_center = tri.mean(axis=0)
-                    #if self.is_visible(window_center, j):
-                        # print(str(j) + " is visible" + "from winow" + str(tri.mean(axis=0)))
-                    if 1==1: # ignore visibility for now
-                        a, b, c = tri - mesh.centroid 
+                    print("'is visible' is", str(self.is_visible(window_center, j)), "for triangle id",str(triangle_id), str(tri.mean(axis=0)))
+                    triangle_id+=1
+                    if self.is_visible(window_center, j):
+                        print(str(j) + " is visible" + "from winow" + str(tri.mean(axis=0)))
+                    # if 1==1: # ignore visibility for now
+                    
+                        a, b, c = tri - mesh.centroid
                         norm = np.linalg.norm(np.cross(b - a, c - a))
                         volume = np.dot(np.cross(b - a, c - a), np.array([0.0, 0.0, 0.0]) - a) / 6.0 
                         angle = 2 * np.arctan2(volume, np.dot(a, b) * np.linalg.norm(c) + 
@@ -118,13 +123,13 @@ class Thresholds:
         
         parameters:
         window_center: numpy.ndarray
-        object_center: numpy.ndarray
+        furn_path: str, path to the .obj file of the object. 
         
         returns: boolean
         '''
         
         intersections = []
-        for i in self.non_permanenet_objs['dirs'].keys():
+        for i in self.non_permanenet_objs['dirs'].keys(): # each category of non-permanent objects
             dir_list = [] #only path to the obj files in one directory
             directory_contents = os.listdir(i)
             # Print the absolute path of each item in the directory
@@ -147,6 +152,8 @@ class Thresholds:
                     except ValueError:
                         #print(f"ValueError on {j}. Skipping...") -- 
                         continue
+            else:
+                print("Same object")
                 
         
         return(not bool(len(intersections))) # if no intersections, means that window is visible. 
