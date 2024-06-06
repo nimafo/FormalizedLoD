@@ -12,7 +12,6 @@ class Thresholds:
         self.permanent_objs_transparent = permanent_objs_transparent
         self.non_permanenet_objs = non_permanenet_objs
         self.count = count
-        
         #Add non_permanent objects
         full_list = [] #list containing all the non permanent objects flattened
         values_of_interest = []
@@ -20,25 +19,29 @@ class Thresholds:
         non_perm_dict = {}
         #list the non_permanent dirs
         # glazing triangles for solid angle calculation
-        #empty numpy array to store the triangles
+        # empty numpy array to store the triangles
         window_triangles_list = []
+        window_mesh_list = []
+        window_id = 0
         for i in permanent_objs_transparent.keys():
+            print(f"window id is {window_id}")
+            window_id+=1
             try:
                 mesh = trimesh.load(i)
+                window_mesh_list.append(mesh)
                 #print("window triangle shape:", mesh.triangles.shape)
                 # add mesh triangles to list
                 window_triangles_list.append(mesh.triangles)
             except ValueError:
                 #print(f"ValueError on {i}. Skipping...")
                 continue
-
+        print(f"there are {len(window_mesh_list)} window meshes")
         # Concatenate all window triangles in the list into a single numpy array
         window_triangles = np.concatenate(window_triangles_list, axis=0)
         print (f"there are {len(window_triangles)} window triangles")
-        #print("Window triangles shape:", window_triangles.shape) # should be (n, 3, 3)
+        
         for i in non_permanenet_objs['dirs'].keys(): # each category of non-permanent objects
-            
-            print(i)
+            #print(i)
             dir_list = [] #only path to the obj files in one directory
             directory_contents = os.listdir(i)
             # Print the absolute path of each item in the directory
@@ -47,7 +50,7 @@ class Thresholds:
                 full_list.append(abs_path)
                 dir_list.append(abs_path)
             for j in dir_list: # j is the path to the .obj instance file
-                print(j)
+                #print(j)
                 try:
                     #print(j)
                     mesh = trimesh.load(j)
@@ -68,8 +71,6 @@ class Thresholds:
                 # calculate solid angle 
                 '''Calculate the clumulative solid angle subtended by the mesh triangles from the point.
                     IT DOES NOT ACCOUNT FOR OCCULSIONS BY OTHER OBJECTS!!!!! how to resolve that? 
-                    
-                    
                     Parameters:
                     triangles (numpy.
                     .....ndarray): Array of triangles, shape (n, 3, 3)
@@ -80,12 +81,11 @@ class Thresholds:
                 total_solid_angle = 0.0
                 triangle_id = 0
                 for tri in window_triangles:
-                    window_center = tri.mean(axis=0)
-                    print("'is visible' is", str(self.is_visible(window_center, j)), "for triangle id",str(triangle_id), str(tri.mean(axis=0)))
+                    #print("'is visible' is", str(self.is_visible(window_triangle_center, j)), "for triangle id",str(triangle_id), str(tri.mean(axis=0)))
                     triangle_id+=1
-                    if self.is_visible(window_center, j):
-                        print(str(j) + " is visible" + "from winow" + str(tri.mean(axis=0)))
-                    # if 1==1: # ignore visibility for now
+                    #if self.is_visible(window_triangle_center, j):
+                        #print(str(j) + " is visible" + "from winow" + str(tri.mean(axis=0)))
+                    if 1==1: # ignore visibility for now
                     
                         a, b, c = tri - mesh.centroid
                         norm = np.linalg.norm(np.cross(b - a, c - a))
@@ -116,18 +116,17 @@ class Thresholds:
         return None
         #return thresholds, values_of_interest, non_perm_dict, bb_size_list #types: numpy, list 
     
-    def is_visible(self, window_center, furn_path): # implement as is_visible(tri.mean(), j)
+    def is_visible(self, window_triangle_center, furn_path): # implement as is_visible(tri.mean(), j)
         '''
         visibility criteria. 
         returns False if ray from object mesh centroid to window triangle center intersects with any other non_perm_object
         
         parameters:
-        window_center: numpy.ndarray
+        window_triangle_center: numpy.ndarray
         furn_path: str, path to the .obj file of the object. 
         
         returns: boolean
         '''
-        
         intersections = []
         for i in self.non_permanenet_objs['dirs'].keys(): # each category of non-permanent objects
             dir_list = [] #only path to the obj files in one directory
@@ -140,7 +139,7 @@ class Thresholds:
                 if furn_path != j: # for all "other" objects:
                     try:
                         mesh = trimesh.load(j)
-                        intersections.append(mesh.ray.intersects_location(ray_origins=[mesh.centroid], ray_directions=[window_center - mesh.centroid]))
+                        intersections.append(mesh.ray.intersects_location(ray_origins=[mesh.centroid], ray_directions=[window_triangle_center - mesh.centroid]))
                         if len(intersections) != 0:
                             return(not bool(len(intersections)))
                     except QhullError:
@@ -158,106 +157,10 @@ class Thresholds:
         
         return(not bool(len(intersections))) # if no intersections, means that window is visible. 
         
-    
-    
-    
-    
-    
-# def Thresholds(permanent_objs_transparent, non_permanenet_objs, count = 10): # intended to define the thresholds for inclusion/exclusion of non-permanent objects as numpy array
-#     #Add non_permanent objects
-#     full_list = [] #list containing all the non permanent objects flattened
-#     values_of_interest = []
-#     bb_size_list = []
-#     non_perm_dict = {}
-#     #list the non_permanent dirs
-#     # glazing triangles for solid angle calculation
-#     #empty numpy array to store the triangles
-#     window_triangles_list = []
-#     for i in permanent_objs_transparent.keys():
-#         try:
-#             mesh = trimesh.load(i)
-#             #print("window triangle shape:", mesh.triangles.shape)
-#             # add mesh triangles to list
-#             window_triangles_list.append(mesh.triangles)
-#         except ValueError:
-#             #print(f"ValueError on {i}. Skipping...")
-#             continue
-
-#     # Concatenate all window triangles in the list into a single numpy array
-#     window_triangles = np.concatenate(window_triangles_list, axis=0)
-#     #print("Window triangles shape:", window_triangles.shape) # should be (n, 3, 3)
-#     for i in non_permanenet_objs['dirs'].keys(): 
-#         #print(i)
-#         dir_list = [] #only path to the obj files in one directory
-#         directory_contents = os.listdir(i)
-#         # Print the absolute path of each item in the directory
-#         for item in directory_contents:
-#             abs_path = os.path.join(i, item)
-#             full_list.append(abs_path)
-#             dir_list.append(abs_path)
-#         for j in dir_list:
-#             #print(j)
-#             try:
-#                 #print(j)
-#                 mesh = trimesh.load(j)
-#                 #print(os.path.basename(j))
-#                 bb_size_list.append(mesh.bounding_box_oriented.area)
-#                 values_of_interest.append(mesh.bounding_box_oriented.area)#Core of the inclusion/ exclusion
-#                 OBB_size = mesh.bounding_box_oriented.area
-                
-#             except QhullError:
-#                 #print(f"QhullError creating mesh from {j}. Skipping...")
-#                 continue
-#             except TypeError:
-#                 #print(f"TypeError on {j}. Skipping...")
-#                 continue
-#             except ValueError:
-#                 #print(f"ValueError on {j}. Skipping...") -- 
-#                 continue
             
-#             # calculate solid angle 
-#             '''Calculate the clumulative solid angle subtended by the mesh triangles from the point.
-#                 IT DOES NOT ACCOUNT FOR OCCULSIONS BY OTHER OBJECTS!!!!! how to resolve that? 
-                
-                
-#                 Parameters:
-#                 triangles (numpy.
-#                 .....ndarray): Array of triangles, shape (n, 3, 3)
-#                 point (numpy.ndarray): Observation point, shape (3,)
-                
-#                 Returns:
-#                 float: Solid angle in steradians '''
-                
-#             total_solid_angle = 0.0
     
-#             for tri in window_triangles:
-#                 # if centerpoint of triangle is visible from the point -- considerig all the other perm/non-perm objects
-#                 # (if visible:)
-#                 a, b, c = tri - mesh.centroid
-#                 norm = np.linalg.norm(np.cross(b - a, c - a))
-#                 volume = np.dot(np.cross(b - a, c - a), np.array([0.0, 0.0, 0.0]) - a) / 6.0
-#                 angle = 2 * np.arctan2(volume, np.dot(a, b) * np.linalg.norm(c) + 
-#                                             np.dot(b, c) * np.linalg.norm(a) + 
-#                                             np.dot(c, a) * np.linalg.norm(b))
-#                 total_solid_angle += angle
-            
-#             solid_angle = np.abs(total_solid_angle)
-            
-#             object_Name = os.path.basename(j).split(".")[0]
-#             non_perm_dict.update({object_Name:{'attributes':{'transparency_type':'opaque',
-#                                                     'material' : non_permanenet_objs['dirs'][i],
-#                                                     'permanency': 'non-permanent',
-#                                                     'OBB_area': OBB_size,
-#                                                     'solid_angle': solid_angle},
-#                                                 'file_address': j,
-#                                                 'mesh': mesh}})
-
-
-#     min_value = min(values_of_interest)
-#     max_value = max(values_of_interest)
-#     thresholds = np.linspace(min_value,max_value,10)
-
-#     return thresholds, values_of_interest, non_perm_dict, bb_size_list #types: numpy, list 
+    
+    
 def space_dict(permanent_objs_opaque, permanent_objs_transparent, non_perm_dict):
     space_dict = {} #contains all the objects in a space, their mesh, and material, and address 
     #Permanent objects
