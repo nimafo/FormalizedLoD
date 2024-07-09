@@ -1,7 +1,7 @@
 import sys
 sys.path.append('/scratch/nforouzandehsh/FormalizedLoD')
 sys.path.append('/scratch/nforouzandehsh/DelftBlueFiles')
-from input_station import DB_s09_unceraintyIsolation, DB_s11_unceraintyIsolation, DB_s06_unceraintyIsolation
+from input_station import DB_s08 # the input space
 from definitions import AnnualSimulation
 import os
 from mpi4py import MPI

@@ -1264,71 +1264,73 @@ def fit_goodness(paths:list, ground_truth:str):
         
     # Calculate the goodness of the fit
     return fitness_calcualtor(apis)
-def fit_goodness(results_folder:list = os.listdir("/scratch/nforouzandehsh/sim_res")):
-    '''measures goodness of the fitted curve from the results folder(Kolmogorov-Smirnov test)'''
+
+## commented because sim_res was not found
+# def fit_goodness(results_folder:list = os.listdir("/scratch/nforouzandehsh/sim_res")):
+#     '''measures goodness of the fitted curve from the results folder(Kolmogorov-Smirnov test)'''
     
-    results = os.listdir(results_folder)
-    gt = [] #filenames with 
-    acc_1 = []
-    acc_2 = []
-    for filename in results:
-        if filename.endswith("csv.gz"):
-            if filename.startswith("0_"):
-                gt.append(os.path.join(results_folder,filename))
-            if filename.startswith("0.1_"):
-                acc_1.append(os.path.join(results_folder,filename))
-            if filename.startswith("0.2_"):
-                acc_2.append(os.path.join(results_folder,filename))
+#     results = os.listdir(results_folder)
+#     gt = [] #filenames with 
+#     acc_1 = []
+#     acc_2 = []
+#     for filename in results:
+#         if filename.endswith("csv.gz"):
+#             if filename.startswith("0_"):
+#                 gt.append(os.path.join(results_folder,filename))
+#             if filename.startswith("0.1_"):
+#                 acc_1.append(os.path.join(results_folder,filename))
+#             if filename.startswith("0.2_"):
+#                 acc_2.append(os.path.join(results_folder,filename))
     
-    ground_truth = TAI(np.asarray(pd.read_csv(gt[0]))) #the ground truth TAI
-    error_acc1 = []
-    error_acc2 = []
-    for res in acc_1:
-        tai = TAI(np.asarray(pd.read_csv(res)))
-        api = 100*(ground_truth - tai)/ground_truth
-        error_acc1.append(api)
-    for res in acc_2:
-        tai = TAI(np.asarray(pd.read_csv(res)))
-        api = 100*(ground_truth - tai)/ground_truth
-        error_acc2.append(api)
+#     ground_truth = TAI(np.asarray(pd.read_csv(gt[0]))) #the ground truth TAI
+#     error_acc1 = []
+#     error_acc2 = []
+#     for res in acc_1:
+#         tai = TAI(np.asarray(pd.read_csv(res)))
+#         api = 100*(ground_truth - tai)/ground_truth
+#         error_acc1.append(api)
+#     for res in acc_2:
+#         tai = TAI(np.asarray(pd.read_csv(res)))
+#         api = 100*(ground_truth - tai)/ground_truth
+#         error_acc2.append(api)
         
-    res_sim = {"GT":ground_truth,
-            "acc_1":error_acc1,
-            "acc_2":error_acc2}
+#     res_sim = {"GT":ground_truth,
+#             "acc_1":error_acc1,
+#             "acc_2":error_acc2}
 
 
-    convergence={}
-    acc_classes = ["acc_1","acc_2"]
-    for acc_class in acc_classes:
-        if len(res_sim[acc_class])>10:
-            # fit a pdf to the error 1 and error 2, find the discriptors of the pdf, and find convergence
-            loc, scale = norm.fit(res_sim[acc_class])
-            histogram, bin_edges = np.histogram(res_sim[acc_class], bins=10, density=True)
-            cdf = np.cumsum(histogram * np.diff(bin_edges))
-            pdf = norm.cdf(bin_edges[1:], loc=loc, scale=scale) - norm.cdf(bin_edges[:-1], loc=loc, scale=scale)
-            norm_ks_stat, norm_p_val = kstest(cdf, norm(loc=loc, scale=scale).cdf)
+#     convergence={}
+#     acc_classes = ["acc_1","acc_2"]
+#     for acc_class in acc_classes:
+#         if len(res_sim[acc_class])>10:
+#             # fit a pdf to the error 1 and error 2, find the discriptors of the pdf, and find convergence
+#             loc, scale = norm.fit(res_sim[acc_class])
+#             histogram, bin_edges = np.histogram(res_sim[acc_class], bins=10, density=True)
+#             cdf = np.cumsum(histogram * np.diff(bin_edges))
+#             pdf = norm.cdf(bin_edges[1:], loc=loc, scale=scale) - norm.cdf(bin_edges[:-1], loc=loc, scale=scale)
+#             norm_ks_stat, norm_p_val = kstest(cdf, norm(loc=loc, scale=scale).cdf)
 
-            # Calculate the error of the histogram using KS test
-            shape, loc, scale = lognorm.fit(res_sim[acc_class])
-            histogram, bin_edges = np.histogram(res_sim[acc_class], bins=10, density=True)
-            cdf = np.cumsum(histogram * np.diff(bin_edges))
-            pdf = lognorm.cdf(bin_edges[1:], shape, loc=loc, scale=scale) - lognorm.cdf(bin_edges[:-1], shape, loc=loc, scale=scale)
-            lognorm_ks_stat, lognorm_p_val = kstest(cdf, lognorm(shape, loc=loc, scale=scale).cdf)
+#             # Calculate the error of the histogram using KS test
+#             shape, loc, scale = lognorm.fit(res_sim[acc_class])
+#             histogram, bin_edges = np.histogram(res_sim[acc_class], bins=10, density=True)
+#             cdf = np.cumsum(histogram * np.diff(bin_edges))
+#             pdf = lognorm.cdf(bin_edges[1:], shape, loc=loc, scale=scale) - lognorm.cdf(bin_edges[:-1], shape, loc=loc, scale=scale)
+#             lognorm_ks_stat, lognorm_p_val = kstest(cdf, lognorm(shape, loc=loc, scale=scale).cdf)
 
-            # Fit a gamma distribution to the data
-            shape, loc, scale = gamma.fit(res_sim[acc_class])
+#             # Fit a gamma distribution to the data
+#             shape, loc, scale = gamma.fit(res_sim[acc_class])
 
-            # Calculate the error of the histogram using KS test
-            cdf = np.cumsum(histogram * np.diff(bin_edges))
-            pdf = gamma.cdf(bin_edges[1:], shape, loc=loc, scale=scale) - gamma.cdf(bin_edges[:-1], shape, loc=loc, scale=scale)
-            gamma_ks_stat, gamma_p_val = kstest(cdf, gamma(shape, loc=loc, scale=scale).cdf)
-            convergence[acc_class] = {"norm": {"ks_stat":norm_ks_stat, 
-                                            "p_val":norm_p_val},
-                                    "lognorm": {"ks_stat":lognorm_ks_stat,
-                                                "p_val":lognorm_p_val},
-                                    "gamma": {"ks_stat":gamma_ks_stat,
-                                                "p_val":gamma_p_val}}
+#             # Calculate the error of the histogram using KS test
+#             cdf = np.cumsum(histogram * np.diff(bin_edges))
+#             pdf = gamma.cdf(bin_edges[1:], shape, loc=loc, scale=scale) - gamma.cdf(bin_edges[:-1], shape, loc=loc, scale=scale)
+#             gamma_ks_stat, gamma_p_val = kstest(cdf, gamma(shape, loc=loc, scale=scale).cdf)
+#             convergence[acc_class] = {"norm": {"ks_stat":norm_ks_stat, 
+#                                             "p_val":norm_p_val},
+#                                     "lognorm": {"ks_stat":lognorm_ks_stat,
+#                                                 "p_val":lognorm_p_val},
+#                                     "gamma": {"ks_stat":gamma_ks_stat,
+#                                                 "p_val":gamma_p_val}}
 
-        else:
-            continue
-    return convergence
+#         else:
+#             continue
+#     return convergence
