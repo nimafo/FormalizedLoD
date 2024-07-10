@@ -28,43 +28,52 @@ module load py-numpy
 # Define virtual environment directory
 VENV_DIR=/scratch/nforouzandehsh/.vs/py_venv
 
-# Remove the existing virtual environment if it exists
+# Remove the existing virtual environment does not exist, do x, else do y
+# if [ -d "$VENV_DIR" ]; then
+#     do x
+# else
+#     do y
+# fi
+
+
+# if [ -d "$VENV_DIR" ]; then
+#     rm -rf "$VENV_DIR"
+#     echo "Removed the existing virtual environment"
+# fi
 if [ -d "$VENV_DIR" ]; then
-    rm -rf "$VENV_DIR"
-    echo "Removed the existing virtual environment"
-fi
+    echo "Virtual environment already exists"
+else 
+    echo "Virtual environment does not exist, creating a new one and installing the required packages"
+    # Create a new virtual environment
+    python -m venv "$VENV_DIR"
+    echo "Created a new virtual environment"
+    # Activate the virtual environment
+    source "$VENV_DIR/bin/activate"
+    # Upgrade pip in the virtual environment
+    pip install --upgrade pip
+
+    # Install the required packages in the virtual environment with the correct numpy version range
+    pip install "numpy>=1.16.5,<1.23.0" scipy matplotlib==3.7.5 packaging==24.1 trimesh==4.4.1 salib==1.3.12 mpi4py
+
+    # # Verify installations
+    pip list
+    # Debugging: Check Python path and environment
+    echo "Checking Python interpreter path..."
+    which python
+
+    echo "Checking PYTHONPATH..."
+    echo $PYTHONPATH
+
+    echo "Checking sys.path in Python..."
+    python -c "import sys; print(sys.path)"
+
+    # Check if trimesh is installed
+    echo "Checking if trimesh is installed..."
+    python -c "import trimesh; print('trimesh version:', trimesh.__version__)" || { echo 'Failed to import trimesh'; exit 1;}
+fi 
 
 unset PYTHONPATH # to avoid conflicts?
 echo "Unset PYTHONPATH"
-
-# Create a new virtual environment
-python -m venv "$VENV_DIR"
-echo "Created a new virtual environment"
-
-# Activate the virtual environment
-source "$VENV_DIR/bin/activate"
-
-# Upgrade pip in the virtual environment
-pip install --upgrade pip
-
-# Install the required packages in the virtual environment with the correct numpy version range
-pip install "numpy>=1.16.5,<1.23.0" scipy matplotlib==3.7.5 packaging==24.1 trimesh==4.4.1 salib==1.3.12 mpi4py
-
-# # Verify installations
-# pip list
-# # Debugging: Check Python path and environment
-# echo "Checking Python interpreter path..."
-# which python
-
-# echo "Checking PYTHONPATH..."
-# echo $PYTHONPATH
-
-# echo "Checking sys.path in Python..."
-# python -c "import sys; print(sys.path)"
-
-# # Check if trimesh is installed
-# echo "Checking if trimesh is installed..."
-# python -c "import trimesh; print('trimesh version:', trimesh.__version__)" || { echo 'Failed to import trimesh'; exit 1; }
 
 # Environment variables
 PATH=/scratch/nforouzandehsh/radiance-5.3.012cb17835-Linux/usr/local/radiance/bin:$PATH
@@ -75,5 +84,5 @@ export PATH RAYPATH MANPATH
 # Run the Python script and redirect output to a log file
 srun bash -c "source $VENV_DIR/bin/activate && echo 'Using virtual environment:' && which python && python -c 'import sys; print(sys.path)' && python 01_CBDM_test.py" > 01_CBDM_test.log
 
-# Deactivate the virtual environment
-deactivate
+# # Deactivate the virtual environment, is this necessary? 
+# deactivate
