@@ -1,58 +1,81 @@
 import sys
 sys.path.append('/scratch/nforouzandehsh/FormalizedLoD')
 sys.path.append('/scratch/nforouzandehsh/DelftBlueFiles')
+# from input_station import GLODs, DB_s01, DB_s02, DB_s04, DB_s06, DB_s07, DB_s08, DB_s09, DB_s10, DB_s11
 from input_station import DB_s08 # the input space
 from definitions import AnnualSimulation
 import os
-from mpi4py import MPI
-import numpy as np
+import pathlib
+# import wandb
 import pandas as pd
+import numpy as np
+from mpi4py import MPI
 
-# Space_ID = "s06"
-# reflectance_MCOAs= [0.05,0.10,0.15,0.20]
-# transmittance_MCOAs = reflectance_MCOAs.copy()
-# Mat_acc_levels = []
-# # for ref in reflectance_MCOAs:
-# #     for trans in transmittance_MCOAs:
-# #         for i in range(500):
-# #             Mat_acc_levels.append({"reflectance": ref,
-# #                                    "transmittance": trans})
-            
-# # make ground truth
-# for i in range(4):
-#     Mat_acc_levels.append({"reflectance": 0,
-#                             "transmittance": 0})
+# wandb.login(key = '2b8311264e061975b7272a261ea39d1d2c41ec5e')
+# wandb.init(name = "Uncertainty Quantification - s07-GLOD3")
 
-# #____________________________
-# comm = MPI.COMM_WORLD
-# rank = comm.Get_rank()
-# size = comm.Get_size()
-# # Split the work among processes
-# chunk_size = len(Mat_acc_levels) // size
-# start = rank * chunk_size
-# end = (rank + 1) * chunk_size
+#user inputs: 
+Space_ID = 's07'
+glod = 4
 
-# # Loop over the assigned chunk
-# for i in range(start, end):
-#     print(f"i: {i}")
-#     space = DB_s06_unceraintyIsolation(trans_Mat_acc_level=Mat_acc_levels[i]["transmittance"], 
-#                                        reflect_Mat_acc_level=Mat_acc_levels[i]["reflectance"])
-#     to_simulate = space.GLOD4()
-#     epw_file = space.epw_file
 
-#     grid_points_txt = space.grid_points_txt
-#     data, simulation_run_name = AnnualSimulation(to_simulate, epw_file, grid_points_txt, base_dir='/scratch/nforouzandehsh/DelftBlueFiles/Outputs/RadFiles')
 
-#     if data.size:#ensures non-emptiness in the results file 
-#         print(f"size of data: {data.size}")
-#         data = pd.DataFrame(data)
-#         print("Changing directory")
-#         os.chdir("/scratch/nforouzandehsh/DelftBlueFiles/Outputs/tranmittance_reflectance_Uncertainty_isolation")
-#         data.astype(np.int32).to_csv(f'{Space_ID}_T_{Mat_acc_levels[i]["transmittance"]}_R_{Mat_acc_levels[i]["reflectance"]}_{simulation_run_name}.csv.gz', index=False, compression='gzip')
+comm = MPI.COMM_WORLD
+rank = comm.Get_rank()
+size = comm.Get_size()
 
-#     # Log data  
-#     # simulated = comm.allreduce(1, op=MPI.SUM)
-#     # progress = 100 * (simulated / len(Mat_acc_levels))
-# # wandb.log({f"Simulation progress[%]": progress})
+# List setup
+#mcoa = [0.05, 0.10, 0.15, 0.20]
+Mat_acc_levels = [0,0,0,0]  # 4 ground truth cases >> test the stability of the results
+#Mat_acc_levels = [] 
 
-# # wandb.finish()
+# for i in range(121):
+#     Mat_acc_levels.append(mcoa[0])
+#     Mat_acc_levels.append(mcoa[1])
+#     Mat_acc_levels.append(mcoa[2])
+#     Mat_acc_levels.append(mcoa[3])
+
+# Split the work among processes
+chunk_size = len(Mat_acc_levels) // size
+start = rank * chunk_size
+end = (rank + 1) * chunk_size
+
+# Loop over the assigned chunk
+for i in range(start, end):
+    print(f"i: {i}")
+    space = DB_s08(Mat_acc_levels[i])
+    if glod == 1:
+        to_simulate = space.GLOD1()
+    elif glod == 2:
+        to_simulate = space.GLOD2()
+    elif glod == 0:
+        to_simulate = space.GLOD0()
+    elif glod == 3:
+        to_simulate = space.GLOD3()
+    elif glod == 4:
+        to_simulate = space.GLOD4()
+    else:
+        print("GLOD not defined")
+    epw_file = space.epw_file
+
+    grid_points_txt = space.grid_points_txt # add cubic illuminance thingie here.
+    if not os.path.exists('/scratch/nforouzandehsh/DelftBlueFiles/Outputs/RadFiles'):
+        os.makedirs('/scratch/nforouzandehsh/DelftBlueFiles/Outputs/RadFiles')
+    data, simulation_run_name = AnnualSimulation(to_simulate, epw_file, grid_points_txt, base_dir='/scratch/nforouzandehsh/DelftBlueFiles/Outputs/RadFiles')
+
+    if data.size:
+        print(f"size of data: {data.size}")
+        data = pd.DataFrame(data)
+        print("changing directory")
+        os.chdir("/scratch/nforouzandehsh/DelftBlueFiles/Outputs/")
+        data.astype(np.int32).to_csv(f'{Space_ID}_{glod}_{Mat_acc_levels[i]}_{simulation_run_name}.csv.gz', index=False, compression='gzip')
+
+    # Log data
+    simulated = comm.allreduce(1, op=MPI.SUM)
+    progress = 100 * (simulated / len(Mat_acc_levels))
+#     wandb.log({f"Simulation progress[%]": progress})
+
+# wandb.finish()
+
+
+
