@@ -1,11 +1,11 @@
 #!/bin/bash
 
 #SBATCH --job-name="CBDM_test"
-#SBATCH --time=01:45:00
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
+#SBATCH --time=10:00:00
+#SBATCH --ntasks=4
+#SBATCH --cpus-per-task=4
 #SBATCH --partition=compute
-#SBATCH --mem-per-cpu=10GB
+#SBATCH --mem-per-cpu=12GB
 #SBATCH --account=research-abe-aet
 
 # # Cleanup: remove previous log files
@@ -24,7 +24,8 @@ module load py-pip
 module load py-mpi4py
 module load py-numpy
 
-
+# echo start time
+echo "Job started at: $(date)"
 # Define virtual environment directory
 VENV_DIR=/scratch/nforouzandehsh/.vs/py_venv
 
@@ -84,5 +85,6 @@ export PATH RAYPATH MANPATH
 # Run the Python script and redirect output to a log file
 srun bash -c "source $VENV_DIR/bin/activate && echo 'Using virtual environment:' && which python && python -c 'import sys; print(sys.path)' && python 01_CBDM_test.py" > 01_CBDM_test.log
 
+echo "Job finished at: $(date)"
 # # Deactivate the virtual environment, is this necessary? 
 # deactivate

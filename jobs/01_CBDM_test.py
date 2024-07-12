@@ -9,8 +9,7 @@ import pathlib
 # import wandb
 import pandas as pd
 import numpy as np
-from mpi4py import MPI
-
+import mpi4py.MPI as MPI
 # wandb.login(key = '2b8311264e061975b7272a261ea39d1d2c41ec5e')
 # wandb.init(name = "Uncertainty Quantification - s07-GLOD3")
 
@@ -43,7 +42,7 @@ end = (rank + 1) * chunk_size
 # Loop over the assigned chunk
 for i in range(start, end):
     print(f"i: {i}")
-    space = DB_s08(Mat_acc_levels[i])
+    space = DB_s08(Mat_acc_levels[i],cubic_grid=1)
     if glod == 1:
         to_simulate = space.GLOD1()
     elif glod == 2:
