@@ -200,7 +200,7 @@ def WindowTriangleVisible(triangles: np.ndarray, point: np.ndarray) -> float:
     
 
 class DB_s08:
-    def __init__(self, Mat_acc_level:float):
+    def __init__(self, Mat_acc_level:float, cubic_grid = False):
         self.Mat_acc_level = Mat_acc_level
         '''Input station for DA200'''
         # Adress book
@@ -208,7 +208,11 @@ class DB_s08:
         epw_file = r"/scratch/nforouzandehsh/DelftBlueFiles/Inputs/weatherfiles/CAN_ON_Toronto.City.715080_CWEC2016.epw"
         reinsrc_cal_file = r"/scratch/nforouzandehsh/radiance-5.3.012cb17835-Linux/usr/local/radiance/lib/reinsrc.cal"
         reinhart_cal_file = r"/scratch/nforouzandehsh/radiance-5.3.012cb17835-Linux/usr/local/radiance/lib/reinhart.cal"
-        grid_points_txt = r"/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/points.txt"
+        
+        if cubic_grid: # this does not seem to be a good idea for point definition. 
+            grid_points_txt = r"/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/points_cubic_spaceAngle0.txt"
+        else:
+            grid_points_txt = r"/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/points.txt"
         
         rand_mat = np.random.normal(0,Mat_acc_level,(1,11)).tolist()[0] #11 is more than or equal to the number of paths
         permanent_objs_transparent = {r"/scratch/nforouzandehsh/DelftBlueFiles/Inputs/S08/perm_roomabove_glass.obj": {'R':trn_ref_cnstraint(0.75+rand_mat[0]),'G':trn_ref_cnstraint(0.75+rand_mat[0]),'B': trn_ref_cnstraint(0.75+rand_mat[0])},

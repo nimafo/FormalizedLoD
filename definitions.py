@@ -24,6 +24,9 @@ from typing import Union
 import random
 import matplotlib.font_manager as fm
 
+
+
+
 #Functions for Dynamic Daylighting Simulation(DDS)
 def set_radiance_variables():
     '''sets the radiance variables '''
@@ -203,13 +206,20 @@ def write_room(Base_folder, to_simulate):
     if room_black_rad != '':
         outfile_black.write(room_black_rad)
     #outfile.close()
-def AnnualSimulation(to_simulate:dict,epw_file:str, grid_points_txt:str,base_dir:str, rad_params:dict={'-lw': 0.0001, '-ab': 5, '-ad': 10000}, wea_:str=None, direcory_cleanup:bool=True):
+def AnnualSimulation(to_simulate:dict,
+                     epw_file:str,
+                     grid_points_txt:str,
+                     base_dir:str,
+                     rad_params:dict={'-lw': 0.0001, '-ab': 5, '-ad': 10000},
+                     wea_:str=None,
+                     direcory_cleanup:bool=True):
+
         simulation_run_name = str(datetime.datetime.now()).replace(" ", "_").replace("-", "").replace(":", "_").replace(".", "_")+f"_{str(uuid.uuid1())}"
         print("Simulation run name is:"+ simulation_run_name)
         base_folder = rf'{base_dir}/{simulation_run_name}/'
         print("Len to_simulate: "+str(len(to_simulate)))
         
-        Base_folder,object_folder,skydomes_folder,octrees_folder,matrices_folder,dc_folder,dcd_folder,assets_folder,skyvectors_folder,results_folder,results_dcDDS,results_DDS_dc,results_DDS_dcd,skies_folder,matrices_cds_folder,results_dcDDS_cds = make_folders(base_folder)
+        Base_folder,object_folder,skydomes_folder, octrees_folder,matrices_folder,dc_folder,dcd_folder,assets_folder,skyvectors_folder,results_folder,results_dcDDS,results_DDS_dc,results_DDS_dcd,skies_folder,matrices_cds_folder,results_dcDDS_cds = make_folders(base_folder)
 
         #Write the rad objects
         write_objs(to_simulate, object_folder)
