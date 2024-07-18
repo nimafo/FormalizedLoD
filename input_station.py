@@ -202,6 +202,7 @@ def WindowTriangleVisible(triangles: np.ndarray, point: np.ndarray) -> float:
 class DB_s08:
     def __init__(self, Mat_acc_level:float, cubic_grid = False):
         self.Mat_acc_level = Mat_acc_level
+        self.ID = 's08'
         '''Input station for DA200'''
         # Adress book
         #simulation folder

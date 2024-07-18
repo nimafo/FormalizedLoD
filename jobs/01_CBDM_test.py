@@ -14,7 +14,6 @@ import mpi4py.MPI as MPI
 # wandb.init(name = "Uncertainty Quantification - s07-GLOD3")
 
 #user inputs: 
-Space_ID = 's07'
 glod = 4
 
 
@@ -67,7 +66,7 @@ for i in range(start, end):
         data = pd.DataFrame(data)
         print("changing directory")
         os.chdir("/scratch/nforouzandehsh/DelftBlueFiles/Outputs/")
-        data.astype(np.int32).to_csv(f'{Space_ID}_{glod}_{Mat_acc_levels[i]}_{simulation_run_name}.csv.gz', index=False, compression='gzip')
+        data.astype(np.int32).to_csv(f'{space.ID}_{glod}_{Mat_acc_levels[i]}_{simulation_run_name}.csv.gz', index=False, compression='gzip')
 
     # Log data
     simulated = comm.allreduce(1, op=MPI.SUM)

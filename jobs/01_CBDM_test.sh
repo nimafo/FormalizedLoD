@@ -16,6 +16,9 @@
 #     fi
 # done
 
+# Capture submission time
+echo "$(date +%s)" > /tmp/CBDM_test.txt
+
 # Load the required modules
 module load 2022r2
 module load openmpi
@@ -82,9 +85,15 @@ RAYPATH=/scratch/nforouzandehsh/radiance-5.3.012cb17835-Linux/usr/local/radiance
 MANPATH=/scratch/nforouzandehsh/radiance-5.3.012cb17835-Linux/usr/local/radiance/man
 export PATH RAYPATH MANPATH
 
-# Run the Python script and redirect output to a log file
+start_time=$(date +%s) # time monitor
+
 srun bash -c "source $VENV_DIR/bin/activate && echo 'Using virtual environment:' && which python && python -c 'import sys; print(sys.path)' && python 01_CBDM_test.py" > 01_CBDM_test.log
 
-echo "Job finished at: $(date)"
-# # Deactivate the virtual environment, is this necessary? 
-# deactivate
+# time monitor
+end_time=$(date +%s)
+sub_time=$(cat /tmp/CBDM_test.txt)
+queue_time=$((start_time - sub_time))
+run_time=$((end_time - start_time))
+echo "Queue Time: $queue_time seconds" >> CBDM_test.log
+echo "Running Time: $run_time seconds" >> CBDM_test.log
+rm /tmp/CBDM_test.txt
