@@ -1,0 +1,23 @@
+sys.path1
+['/home/nforouzandehsh/RQ1/jobs', '/apps/arch/2024r1/software/linux-rhel8-cascadelake/gcc-11.3.0/py-pip-23.1.2-zevxmrmruxyp43cf5d4xdbcn2yplpft3/lib/python3.10/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python39.zip', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/lib-dynload', '/home/nforouzandehsh/.local/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/habitat_sim-0.3.2-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/pillow-10.4.0-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/setuptools-75.3.0-py3.9.egg']
+sys.path2
+['/home/nforouzandehsh/RQ1/jobs', '/apps/arch/2024r1/software/linux-rhel8-cascadelake/gcc-11.3.0/py-pip-23.1.2-zevxmrmruxyp43cf5d4xdbcn2yplpft3/lib/python3.10/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python39.zip', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/lib-dynload', '/home/nforouzandehsh/.local/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/habitat_sim-0.3.2-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/pillow-10.4.0-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/setuptools-75.3.0-py3.9.egg', '/home/nforouzandehsh/RQ1', '/home/nforouzandehsh/daylight_codes']
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/wall_painting.rad
+!xform ./objects/flipboard.rad
+

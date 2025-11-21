@@ -1,0 +1,160 @@
+sys.path1
+['/home/nforouzandehsh/RQ1/jobs', '/apps/arch/2024r1/software/linux-rhel8-cascadelake/gcc-11.3.0/py-pip-23.1.2-zevxmrmruxyp43cf5d4xdbcn2yplpft3/lib/python3.10/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python39.zip', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/lib-dynload', '/home/nforouzandehsh/.local/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/habitat_sim-0.3.2-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/pillow-10.4.0-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/setuptools-75.3.0-py3.9.egg']
+sys.path2
+['/home/nforouzandehsh/RQ1/jobs', '/apps/arch/2024r1/software/linux-rhel8-cascadelake/gcc-11.3.0/py-pip-23.1.2-zevxmrmruxyp43cf5d4xdbcn2yplpft3/lib/python3.10/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python39.zip', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/lib-dynload', '/home/nforouzandehsh/.local/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/habitat_sim-0.3.2-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/pillow-10.4.0-py3.9-linux-x86_64.egg', '/home/nforouzandehsh/.conda/envs/FormalizedLoD/lib/python3.9/site-packages/setuptools-75.3.0-py3.9.egg', '/home/nforouzandehsh/RQ1', '/home/nforouzandehsh/daylight_codes']
+total window area is 2.575065338745296
+total window area is 2.575065338745296
+LoD: size of the original dict:19, and size of the GLOD2 is 19
+total window area is 2.575065338745296
+LoD1: size of the original dict:19, and size of the LoD2 is 17
+total window area is 2.575065338745296
+LoD1: size of the original dict:19, and size of the LoD1 is 8
+total window area is 2.575065338745296
+total window area is 2.575065338745296
+LoD: size of the original dict:19, and size of the GLOD2 is 19
+total window area is 2.575065338745296
+LoD1: size of the original dict:19, and size of the LoD2 is 17
+total window area is 2.575065338745296
+LoD1: size of the original dict:19, and size of the LoD1 is 8
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/wall_painting.rad
+!xform ./objects/flipboard.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_11_20_35_417100_7a9d5c7e-5593-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_11_20_35_417100_7a9d5c7e-5593-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_11_20_35_417100_7a9d5c7e-5593-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_11_20_35_417100_7a9d5c7e-5593-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/wall_painting.rad
+!xform ./objects/flipboard.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_12_19_03_605575_a5a86e24-559b-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_12_19_03_605575_a5a86e24-559b-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_12_19_03_605575_a5a86e24-559b-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_12_19_03_605575_a5a86e24-559b-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/object_1.rad
+!xform ./objects/wall_painting.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_13_20_10_679822_2f67907e-55a4-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_13_20_10_679822_2f67907e-55a4-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_13_20_10_679822_2f67907e-55a4-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_13_20_10_679822_2f67907e-55a4-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_14_21_01_782519_afa19d36-55ac-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_14_21_01_782519_afa19d36-55ac-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_14_21_01_782519_afa19d36-55ac-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_14_21_01_782519_afa19d36-55ac-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+!xform ./objects/group06.rad
+!xform ./objects/group09.rad
+!xform ./objects/group08.rad
+!xform ./objects/group10.rad
+!xform ./objects/group03.rad
+!xform ./objects/group05.rad
+!xform ./objects/group07.rad
+!xform ./objects/group04.rad
+!xform ./objects/table.rad
+!xform ./objects/wall_painting.rad
+!xform ./objects/flipboard.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_15_20_55_673674_0dc1e1b6-55b5-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_15_20_55_673674_0dc1e1b6-55b5-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_15_20_55_673674_0dc1e1b6-55b5-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_15_20_55_673674_0dc1e1b6-55b5-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+!xform ./objects/group06.rad
+!xform ./objects/group09.rad
+!xform ./objects/group08.rad
+!xform ./objects/group10.rad
+!xform ./objects/group03.rad
+!xform ./objects/group05.rad
+!xform ./objects/group07.rad
+!xform ./objects/group04.rad
+!xform ./objects/table.rad
+!xform ./objects/wall_painting.rad
+!xform ./objects/flipboard.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_16_18_34_928815_1ba253a8-55bd-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_16_18_34_928815_1ba253a8-55bd-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_16_18_34_928815_1ba253a8-55bd-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_16_18_34_928815_1ba253a8-55bd-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+!xform ./objects/group06.rad
+!xform ./objects/group09.rad
+!xform ./objects/group08.rad
+!xform ./objects/group10.rad
+!xform ./objects/group05.rad
+!xform ./objects/group07.rad
+!xform ./objects/group04.rad
+!xform ./objects/table.rad
+!xform ./objects/wall_painting.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_17_16_16_108938_2aa88090-55c5-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_17_16_16_108938_2aa88090-55c5-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_17_16_16_108938_2aa88090-55c5-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_17_16_16_108938_2aa88090-55c5-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx
+total window area is 39.62307523329815
+!xform ./objects/ceiling.rad
+!xform ./objects/door.rad
+!xform ./objects/floor.rad
+!xform ./objects/lighting.rad
+!xform ./objects/plinth.rad
+!xform ./objects/wall.rad
+!xform ./objects/window_sill.rad
+
+rfluxmtx -I+ -y 15870 -ad 2048 -as 1024 -aa 0.1 -ar 1024 -ab 7 -n 16 - /scratch/nforouzandehsh/temp/RQ1/20250630_18_14_26_456508_4b11463e-55cd-11f0-9268-4c526248fa2e/skydomes/skyglow.rad -i /scratch/nforouzandehsh/temp/RQ1/20250630_18_14_26_456508_4b11463e-55cd-11f0-9268-4c526248fa2e/octrees/roomDC.oc < /scratch/nforouzandehsh/temp/RQ1/20250630_18_14_26_456508_4b11463e-55cd-11f0-9268-4c526248fa2e/points.txt > /scratch/nforouzandehsh/temp/RQ1/20250630_18_14_26_456508_4b11463e-55cd-11f0-9268-4c526248fa2e/matrices/dc/illum.mtx

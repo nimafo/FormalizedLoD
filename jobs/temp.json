@@ -1,0 +1,33 @@
+{
+    "dirs": {
+        "/home/nforouzandehsh/RQ1/inputs/W01050/manual_surface_model/S06/chairs": {
+            "R": 0.2,
+            "G": 0.2,
+            "B": 0.2,
+            "roughness": 0,
+            "specularity": 0
+        },
+        "/home/nforouzandehsh/RQ1/inputs/W01050/manual_surface_model/S06/table": {
+            "R": 0.2,
+            "G": 0.2,
+            "B": 0.2,
+            "roughness": 0,
+            "specularity": 0
+        },
+        "/home/nforouzandehsh/RQ1/inputs/W01050/manual_surface_model/S06/wall_painting": {
+            "R": 0.2,
+            "G": 0.2,
+            "B": 0.2,
+            "roughness": 0,
+            "specularity": 0
+        },
+        "/home/nforouzandehsh/RQ1/inputs/W01050/manual_surface_model/S06/flipBoard": {
+            "R": 0.2,
+            "G": 0.2,
+            "B": 0.2,
+            "roughness": 0,
+            "specularity": 0
+        }
+    },
+    "obj_path_list": {}
+}
