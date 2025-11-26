@@ -4,7 +4,7 @@
 # [GCC 13.3.0]
 # Embedded file name: /home/nforouzandehsh/RQ2_performance_evaluation/process/postprocess.py
 # Compiled at: 2025-05-06 11:54:15
-# Size of source mod 2**32: 27404 bytes --
+# Size of source mod 2**32: 27404 bytes
 if __name__ == "__main__":
     pass
 import numpy as np, os, datetime
