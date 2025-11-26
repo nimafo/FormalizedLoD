@@ -10,7 +10,7 @@
   - `postprocess`: *post-processing scripts for analysis and visualization*
   - `src`: main source codes for daylight simulations, and cubic-illuminance implementations.
 - `Figures`: figures and plots for both vizualisation and data analysis in the paper.
-- `inputs`: *json geometries, simulation grids, and weather files for rooms 1 and 2*: **, *D2(S10)*, *D3(S11)*, and test scenes *S1(S01)*, *S2(S02)*, *S3(S04)*, *T1(S07)*, *T2(S08)*, *T3(S09)**
+- `inputs`: geometries, simulation grids, and weather files for rooms 1 and 2. Please refer to 4TU repository for full access. [![DOI](https://img.shields.io/badge/DOI-10.4121%2Faea693b6--6626--4862--a09c--2d4d0753d6f2-blue)](https://doi.org/10.4121/aea693b6-6626-4862-a09c-2d4d0753d6f2)
 
 
 ---
