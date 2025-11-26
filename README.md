@@ -29,7 +29,7 @@ where:
 The implementation is in `input_station.py`, function `calculate_solid_angle()`.`Threshods` class 
 
 
-This includes a visibility check.  For example, if from the centroid of the red flower box (❌). the first conjunction point (<img src="Figures/green_cross.png" width="3%">) on the connecting line to the windows (<img src="Figures/yellow_line.png" width="5%">) is on the window pane(🟦), then the solid angle of that triangle is added to the total solid angle of the window as seen from the centroid of the flower box.
+This includes a visibility check.  For example, if from the centroid of the red flower box (❌). the first conjunction point (<img src="Figures/green_cross.png" width="3%">) on the connecting line to the windows (<img src="Figures/yellow_line.png" width="2%">) is on the window pane(🟦), then the solid angle of that triangle is added to the total solid angle of the window as seen from the centroid of the flower box.
 <p align="center">
 <img src="Figures/65_page-0001.jpg" alt="Page 65" style="width:50%; height:auto;" />
 </p>
@@ -39,14 +39,14 @@ This includes a visibility check.  For example, if from the centroid of the red 
 
 The analysis grid in this work represents head-poses as shown in the blue region in the figure below, as opposed to the workplane (in red):
 <p align="center">
-  <img src="Figures/3dgrid.png" alt="3D cubic sensor grid" style="max-width:50%; height:auto;" />
+  <img src="Figures/3dgrid.png" alt="3D cubic sensor grid" style="width:50%; height:auto;" />
 </p>
 
 This is implemented in `cuttle` class in `cuttle.py` , which has two key functionalities: 
 1. Creates cubic sensor definitions from a given list of points (as a simple `.txt`) for 2-phase simulation. `space_angle` is set to 0 by default, which means the cubic point directions will be aligned with the global coordinate system (see the figure below). If a non-zero `space_angle` is provided, the cubic sensors will be rotated accordingly.
 
 <p align="center">
-  <img src="Figures/cubic_grid_directions_050_page-0001.jpg" alt="Cubic grid directions" style="max-width:50%; height:auto;" />
+  <img src="Figures/cubic_grid_directions_050_page-0001.jpg" alt="Cubic grid directions" style="width:50%; height:auto;" />
 </p>
 
 2. Calculates the cubic quantities from the raw Radiance results, with quantities that correspond to those proposed by [Christopher Cuttle](https://www.researchgate.net/profile/Christopher-Cuttle/publication/274538293_Research_Note_A_practical_approach_to_cubic_illuminance_measurement/links/56a6d84b08ae997e22ba4fc6/Research-Note-A-practical-approach-to-cubic-illuminance-measurement.pdf). 
