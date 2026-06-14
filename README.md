@@ -31,7 +31,7 @@ The implementation is in `input_station.py`, function `calculate_solid_angle()`.
 
 This includes a visibility check.  For example, if from the centroid of the red flower box (❌). the first conjunction point (<img src="Figures/green_cross.png" width="3%">) on the connecting line to the windows (<img src="Figures/yellow_line.png" width="2%">) is on the window pane(🟦), then the solid angle of that triangle is added to the total solid angle of the window as seen from the centroid of the flower box.
 <p align="center">
-<img src="Figures/65_page-0001.jpg" alt="Page 65" style="width:50%; height:auto;" />
+<img src="Figures/73.png" alt="Page 65" style="width:50%; height:auto;" />
 </p>
 
 ---
