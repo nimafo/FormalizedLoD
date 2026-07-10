@@ -15,11 +15,11 @@
 
 ---
 ### Solid angle calculation
-### Normalized Solid Angle (NSA)
+### Area-Weighted Solid Angle (AWSA)
 
-The Normalized Solid Angle (NSA) is calculated as:
+The Area-Weighted Solid Angle (AWSA) is calculated as:
 
-$`NSA = \frac{Ω}{A_w}`$
+$`AWSA = \frac{Ω}{A_w}`$
 
 where:
 
