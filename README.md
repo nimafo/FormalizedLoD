@@ -1,6 +1,6 @@
 ### Code and data for [Geometrical Levels of Detail for Indoor Daylight Simulation]()
 
-![alt text](<Figures/graohical abstract.png>)
+![alt text](<Figures/graphical abstract.png>)
 
 
 ### Folder structure
