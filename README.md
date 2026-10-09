@@ -1,6 +1,6 @@
-### Code and data for [Geometrical Levels of Detail for Indoor Daylight Simulation: An Aperture-aware Definition]()
+### Code and data for Geometrical Levels of Detail for Indoor Daylight Simulation: An Aperture-aware Definition
 
-![alt text](<Figures/graphical abstract.png>)
+![alt text](<Figures/Graphical_abstract.png>)
 
 
 ### Folder structure
