@@ -1,4 +1,4 @@
-### Code and data for [Geometrical Levels of Detail for Indoor Daylight Simulation]()
+### Code and data for [Geometrical Levels of Detail for Indoor Daylight Simulation: An Aperture-aware Definition]()
 
 ![alt text](<Figures/graphical abstract.png>)
 
@@ -64,7 +64,18 @@ This respository uses an advance 2-phase annual daylight simulation (see `CBDM.p
 If you use the code/program (or part) of this work, please cite our paper:
 
 ```
-The manuscript is under preparation.
+@article{FOROUZANDEH2026115367,
+title = {Geometrical levels of detail for indoor daylight simulation: An aperture-aware definition},
+journal = {Building and Environment},
+pages = {115367},
+year = {2026},
+issn = {0360-1323},
+doi = {https://doi.org/10.1016/j.buildenv.2026.115367},
+url = {https://www.sciencedirect.com/science/article/pii/S0360132326011686},
+author = {Nima Forouzandeh and Lars O. Grobe and Eleonora Brembilla},
+keywords = {Standardisation, Radiance, Digital twin, Scan-to-bim},
+abstract = {This study proposes a formalised framework for defining indoor Geometrical Level of Detail (GLoD) for daylight applications, based on a solid angle descriptor called Area-Weighted Solid Angle (AWSA). Unlike previous approaches that rely on object size or semantics, the proposed method prioritises the inclusion of non-permanent indoor objects based on their obstruction to window surfaces. This allows for a more relevant abstraction and classification of indoor geometry for daylight simulations. Two use case rooms with single- and multi-sided window configurations were analysed under different sky conditions using Climate-Based Daylight Modelling (CBDM) and evaluated through Total Annual Illumination (TAI) on sensor grids placed either on a horizontal working plane or at multiple six cubic directions. Results show that annual illumination was over-predicted when using the simplest GLoD level (GLoD0), compared to the most complete (GLoD3), up to a 41 % at the working plane and up to 77 % at head positions. Sky conditions influenced absolute TAI values but did not markedly change the relative influence of GLoD on either directional (cubic) or non-directional (work-plane) evaluations.}
+}
 ```
 
 ---
@@ -77,8 +88,8 @@ This repository uses the [MIT License](https://opensource.org/licenses/MIT). Thi
 If you have any questions, comments, or suggestions, please feel free to contact me at:
 Forouzandeh.nima@gmail.com; n.forouzandeh@tudelft.nl
 
-November, 2025
+October, 2026
 
-Copyright (C) 2025 | Nima Forouzandeh
+Copyright (C) 2026 | Nima Forouzandeh
 
 
