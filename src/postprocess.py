@@ -23,7 +23,7 @@ class workplane:
                  grid,
                  to_simulate,
                  udi_legend_range=(0, 30),
-                 tai_legend_range=(0, 0.4),
+                 tai_legend_range=(0, 0.3),
                  timestep_count: int = None,
                  compression='gzip',
                  save_string=None,
@@ -437,6 +437,7 @@ class head_pose:
         self.G = np.loadtxt((self.cu.pointstxt_path), usecols=(0, 1, 2)).shape[0]
         self.single_direction_single_point_location()
         
+        
     def single_direction_single_point_location(self):
         """
         TAI = sqrt(TAI_Eu^2 + TAI_Ev^2 + TAI_Ew^2)
@@ -536,51 +537,57 @@ class head_pose:
           margin=dict(l=0, r=0, b=0, t=40))
         fig.update_scenes(xaxis_visible=False, yaxis_visible=False, zaxis_visible=False)
         fig.show()
-    def all_directions_all_point_locations(self):
-        '''only reduces the temporal dimension. tai_Eu_plus is summation of all the'''
-        
-        '''
-        1. No multiplier, all timesteps
-        2. overcast multiplier
-        3. clear sky multiplier
-        
-        for each: 
-        - double check the number of timesteps in TAI
-        - plot the results + quartiles
+        # def all_directions_all_point_locations(self):
+        #     '''only reduces the temporal dimension. tai_Eu_plus is summation of all the
 
+        #     1. No multiplier, all timesteps
+        #     2. overcast multiplier
+        #     3. clear sky multiplier
 
-        '''
-        
-        print(f"shape of multiplier: {self.temporal_multiplier.sum()}")
-        
-        # apply temporal multiplier here
-        # if the temporal multiplier is 0, pop the corresponding timestep values out, so I can verify the number of timesteps.
-        tai_Eu_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_plus'] * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
-        tai_Ev_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_plus'] * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
-        tai_Ew_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_plus'] * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
-        tai_Eu_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_minus'] * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
-        tai_Ev_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_minus'] * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
-        tai_Ew_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_minus'] * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
-        
-        
-        
-        
-        # tai_Eu_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_plus']* self.temporal_multiplier, axis = 1)
-        # tai_Ev_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_plus']* self.temporal_multiplier, axis = 1)
-        # tai_Ew_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_plus']* self.temporal_multiplier, axis = 1)
-        # tai_Eu_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_minus']* self.temporal_multiplier, axis = 1)
-        # tai_Ev_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_minus']* self.temporal_multiplier, axis = 1)
-        # tai_Ew_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_minus']* self.temporal_multiplier, axis = 1)
-        # tai_Eu_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_plus'], axis = 1)
-        # tai_Ev_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_plus'], axis = 1)
-        # tai_Ew_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_plus'], axis = 1)
-        # tai_Eu_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_minus'], axis = 1)
-        # tai_Ev_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_minus'], axis = 1)
-        # tai_Ew_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_minus'], axis = 1)
-        
-        return {'u_plus': tai_Eu_plus, 'v_plus': tai_Ev_plus, 'w_plus': tai_Ew_plus,
-                'u_minus': tai_Eu_minus, 'v_minus': tai_Ev_minus, 'w_minus': tai_Ew_minus}
+        #     for each: 
+        #     - double check the number of timesteps in TAI
+        #     - plot the results + quartiles
+        #     '''
+        #     print(f"shape of multiplier: {self.temporal_multiplier.sum()}")
+        #     # apply temporal multiplier here
+        #     # if the temporal multiplier is 0, pop the corresponding timestep values out, so I can verify the number of timesteps.
+        #     tai_Eu_plus  = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_plus'])#  * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
+        #     tai_Ev_plus  = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_plus'])#  * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
+        #     tai_Ew_plus  = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_plus'])#  * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
+        #     tai_Eu_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_minus'])# * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
+        #     tai_Ev_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_minus'])# * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
+        #     tai_Ew_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_minus'])# * self.temporal_multiplier, axis=1) / self.temporal_multiplier.sum()
 
+        #     # print the number of temporal multiplier values. 
+        #     print(f"number of temporal multiplier values: {self.temporal_multiplier.sum()}")
+
+        #     # tai_Eu_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_plus']* self.temporal_multiplier, axis = 1)
+        #     # tai_Ev_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_plus']* self.temporal_multiplier, axis = 1)
+        #     # tai_Ew_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_plus']* self.temporal_multiplier, axis = 1)
+        #     # tai_Eu_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_minus']* self.temporal_multiplier, axis = 1)
+        #     # tai_Ev_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_minus']* self.temporal_multiplier, axis = 1)
+        #     # tai_Ew_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_minus']* self.temporal_multiplier, axis = 1)
+        #     # tai_Eu_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_plus'], axis = 1)
+        #     # tai_Ev_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_plus'], axis = 1)
+        #     # tai_Ew_plus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_plus'], axis = 1)
+        #     # tai_Eu_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_u_minus'], axis = 1)
+        #     # tai_Ev_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_v_minus'], axis = 1)
+        #     # tai_Ew_minus = 0.001 * np.sum(self.cu.cubic_grid_array['E_w_minus'], axis = 1)
+        #     return {'u_plus': tai_Eu_plus, 'v_plus': tai_Ev_plus, 'w_plus': tai_Ew_plus,
+        #             'u_minus': tai_Eu_minus, 'v_minus': tai_Ev_minus, 'w_minus': tai_Ew_minus}
+    def all_directions_all_point_locations(self, normalise=True):
+        m = np.asarray(self.temporal_multiplier)  # must match n_timesteps
+        out = {}
+        for key, name in [('E_u_plus','u_plus'), ('E_v_plus','v_plus'), ('E_w_plus','w_plus'),
+                        ('E_u_minus','u_minus'), ('E_v_minus','v_minus'), ('E_w_minus','w_minus')]:
+            E = np.asarray(self.cu.cubic_grid_array[key])   # (n_points, n_timesteps)
+            assert E.shape[1] == m.shape[0], f"mask length {m.shape[0]} != timesteps {E.shape[1]}"
+            if normalise:
+                out[name] = np.sum(E * m[None, :], axis=1) / m.sum()      # nTAI [lx], Eq. 4
+            else:
+                out[name] = np.sum(E * m[None, :], axis=1)        # TAI [klx·hr], Eq. 3
+        return out
+    
 class sky_influence:
     def __init__(self,
                  path_to_results: str,
@@ -640,7 +647,17 @@ class sky_influence:
         dirs = ['U+', 'U-', 'V+', 'V-', 'W+', 'W-']
         fig, axes = plt.subplots(2, 3, figsize=(12, 6))
         colors = {'all': 'black', 'intermediate': 'green', 'clear sky': 'orange', 'overcast': 'darkturquoise'}
-        
+        plt.rcParams.update({
+            "font.family": "Times New Roman",
+            "font.size": 24,          # default
+            "axes.titlesize": 16,     # subplot titles
+            "axes.labelsize": 16,
+            "xtick.labelsize": 14,
+            "ytick.labelsize": 14,
+            "legend.fontsize": 14,
+            "figure.titlesize": 18,
+        })
+
         for i, d in enumerate(dirs):
             ax = axes.flat[i]
             for sky, color in colors.items():
@@ -648,16 +665,16 @@ class sky_influence:
                 ax.hist(vals, bins=30, alpha=1, histtype='step', edgecolor=color,
                         weights=np.ones(len(vals))/len(vals))
             ax.set_title(d)
-            # set y limit to [0, 0.5]
+            # set y limit to [0, 0.2] | 
             ax.set_ylim(0, 0.2)
 
-        fig.text(0.5, 0.0, r'TAI_{d}', ha='center', va='center')
+        fig.text(0.5, 0.0, r'$\mathrm{nTAI}_d$', ha='center', va='center', )
         fig.text(0.0, 0.5, 'Normalised Frequency', ha='center', va='center', rotation='vertical')
 
         fig.legend(colors.keys(), loc='upper center', ncol=4)
-        # set y 
+        # set y
         plt.tight_layout(rect=[0, 0, 1, 0.95])
-        # save 
+        # save
         plt.savefig(f"sky_influence_{os.path.basename(path_to_results)}.pdf", dpi=300, bbox_inches="tight")
         print(f"saved to sky_influence_{os.path.basename(path_to_results)}.pdf")
         plt.show()
